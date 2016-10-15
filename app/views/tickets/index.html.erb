@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Tickets</h1>
+
+
+    <% @tickets.each do |ticket| %>
+    <div class="row">
+  <div class="col s12 m6">
+    <div class="card blue-grey darken-1">
+      <div class="card-content white-text">
+        <span class="card-title"><%= ticket.user.email.downcase %></span>
+        <p><%= ticket.comment %><br/><br/><%= ticket.submitted_by.titleize %></p>
+      </div>
+      <div class="card-action">
+        <%= link_to 'Edit', edit_ticket_path(ticket) %>
+        <%= link_to 'Destroy', ticket, method: :delete, data: { confirm: 'Are you sure?' } %>
+      </div>
+    </div>
+  </div>
+</div>
+    <% end %>
+
+
+<%= link_to 'New Ticket', new_ticket_path %>

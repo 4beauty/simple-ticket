@@ -1,0 +1,99 @@
+<style>
+    body {
+      display: flex;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+
+    main {
+      flex: 1 0 auto;
+    }
+
+    body {
+      background: #fff;
+    }
+
+    .input-field{
+      -webkit-box-shadow: 0 0 0px 1000px #F5F5F5 inset;
+    }
+    .input-field input[type=date]:focus + label,
+    .input-field input[type=text]:focus + label,
+    .input-field input[type=email]:focus + label,
+    .input-field input[type=password]:focus + label,
+    input:-webkit-autofill{
+      -webkit-box-shadow: 0 0 0px 1000px #F5F5F5 inset;
+      color: #e91e63;
+      background-color: #F5F5F5;
+    }
+
+    .input-field input[type=date]:focus,
+    .input-field input[type=text]:focus,
+    .input-field input[type=email]:focus,
+    .input-field input[type=password]:focus,
+    input:-webkit-autofill {
+      border-bottom: 2px solid #e91e63;
+      box-shadow: none;
+      -webkit-box-shadow: 0 0 0px 1000px #F5F5F5 inset;
+    }
+
+  </style>
+
+<center>
+      <h5 class="indigo-text">Please, login into your account</h5>
+      <div class="section"></div>
+
+      <div class="container">
+        <div class="z-depth-1 grey lighten-4 row" style="display: inline-block; padding: 32px 48px 0px 48px; border: 1px solid #EEE;">
+
+          <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+            <div class='row'>
+              <div class='col s12'>
+              </div>
+            </div>
+
+            <div class='row'>
+              <div class='input-field col s12'>
+                <%= f.email_field :email, class: "validate", type:"email", style: "-webkit-box-shadow: 0 0 0px 1000px #F5F5F5 inset;"%>
+                <%= f.label "Enter your email", for:"email", style: "text-align:left;" %>
+              </div>
+            </div>
+
+            <div class='row'>
+              <div class='input-field col s12'>
+                <%= f.password_field :password, autocomplete: "off",type: "password"%>
+                <%= f.label "Enter your password", for:"password",class:"active" %>
+              </div>
+              <label style='float: right;'>
+                <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+                  <%= link_to "Forgot your password?", new_password_path(resource_name), class:'pink-text' %><br />
+                <% end -%>
+							</label>
+            </div>
+
+            <% if devise_mapping.rememberable? -%>
+              <div class="row">
+                <%= f.check_box :remember_me %>
+                <%= f.label :remember_me %>
+              </div>
+            <% end -%>
+
+            <br />
+            <center>
+              <div class='row'>
+                <%= f.submit "Log in", class:"col s12 btn btn-large waves-effect indigo" %>
+              </div>
+            </center>
+          <% end %>
+        </div>
+      </div>
+    </center>
+
+    <div class="section"></div>
+    <div class="section"></div>
+
+    <script>
+      $(document).ready(function() {
+        $('select').material_select();
+        $("#at-field-password:-webkit-autofill").prev().addClass("active");
+      });
+    </script>
