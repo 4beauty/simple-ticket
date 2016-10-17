@@ -5,7 +5,11 @@ class TicketsController < ApplicationController
   # GET /tickets
   # GET /tickets.json
   def index
-    @tickets = Ticket.all
+    if params[:resolved].present?
+      @tickets = Ticket.all.where(status: "completed")
+    else
+      @tickets = Ticket.all.where(status: "pending")
+    end
   end
 
   # GET /tickets/1
@@ -28,7 +32,7 @@ class TicketsController < ApplicationController
     @ticket = Ticket.new(ticket_params)
     respond_to do |format|
       if @ticket.save
-        format.html { redirect_to new_ticket_path, notice: 'Ticket was successfully created.' }
+        format.html { redirect_to tickets_path, notice: 'Ticket was successfully created.' }
         format.json { render :show, status: :created, location: @ticket }
       else
         format.html { render :new }
@@ -42,10 +46,10 @@ class TicketsController < ApplicationController
   def update
     respond_to do |format|
       if @ticket.update(ticket_params)
-        format.html { redirect_to @ticket, notice: 'Ticket was successfully updated.' }
+        format.html { redirect_to tickets_path, notice: 'Ticket was successfully updated.' }
         format.json { render :show, status: :ok, location: @ticket }
       else
-        format.html { render :edit }
+        format.html { redirect_to tickets_path, notice: 'Unable to update ticket.' }
         format.json { render json: @ticket.errors, status: :unprocessable_entity }
       end
     end
@@ -69,6 +73,7 @@ class TicketsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def ticket_params
-      params.require(:ticket).permit(:comment, :submitted_by, :user_id)
+      params.require(:ticket).permit(:comment, :submitted_by, :user_id, :department_id, :status)
     end
+
 end

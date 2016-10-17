@@ -7,8 +7,8 @@
     </div>
 
     <div class="input-field col s6">
-      <%= f.collection_select :user_id, User.all, :id, :email, {include_blank: true} %>
-      <label>Who is this ticket for?</label>
+      <%= f.collection_select :department_id, Department.all, :id, :name %>
+      <label for="department_id">Department</label>
     </div>
   </div>
 

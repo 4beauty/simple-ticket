@@ -1,24 +1,56 @@
 <p id="notice"><%= notice %></p>
 
 <h1>Tickets</h1>
-
-
-    <% @tickets.each do |ticket| %>
-    <div class="row">
-  <div class="col s12 m6">
-    <div class="card blue-grey darken-1">
-      <div class="card-content white-text">
-        <span class="card-title"><%= ticket.user.email.downcase %></span>
-        <p><%= ticket.comment %><br/><br/><%= ticket.submitted_by.titleize %></p>
+  <div class="row">
+    <div class="col m2">
+      <p class="teal-text">Signed in as <%=current_user.name.titleize%></p>
+      <div class="clear"></div>
+      <nav class="teal">
+        <div class="nav-wrapper">
+          <form>
+            <div class="input-field">
+              <input id="search" type="search" required>
+              <label for="search"><i class="material-icons">search</i></label>
+              <i class="material-icons">close</i>
+            </div>
+          </form>
+        </div>
+      </nav>
+      <div class="collection">
+        <%= link_to 'New Ticket', new_ticket_path, class:"collection-item" %>
+        <%= link_to 'View Pending Tickets', tickets_path(), class:"collection-item" %>
+        <%= link_to 'View Resolved Tickets', tickets_path(resolved: true ), class:"collection-item" %>
       </div>
-      <div class="card-action">
-        <%= link_to 'Edit', edit_ticket_path(ticket) %>
-        <%= link_to 'Destroy', ticket, method: :delete, data: { confirm: 'Are you sure?' } %>
+    </div>
+    <div class="col m9 offset-m1">
+      <div class="ticket-container">
+        <div class="row">
+          <% @tickets.each do |ticket| %>
+            <div class="col s12 m6 l4">
+              <div class="card ">
+                <div class="card-content black-text">
+                  <span class="card-title"><%= ticket.department ? ticket.department.name.upcase : ticket.user.department.name.upcase %>
+                    <% if ticket.user %>
+                      <div class="right chip green lighten-4"><%= ticket.user.name.titleize %></div>
+                    <% else %>
+                      <%= link_to ticket_path(id: ticket.id, ticket: {id: ticket.id, user_id: current_user.id}), method:"PATCH" ,class:"right btn-floating lighten-2 waves-effect waves-light red" do %>
+                        <i class="material-icons">add</i>
+                      <% end %>
+                    <% end %>
+                  </span>
+                  <p><%= ticket.comment.humanize %><br/><br/></p>
+                <span class="right grey-text"> Submitted By <div class="chip red lighten-4"><%= ticket.submitted_by.titleize %></div></span>
+                  <br>
+                  <div class="clear"></div>
+                </div>
+                <div class="card-action">
+                  <%= link_to 'Complete', ticket_path(id: ticket,  ticket: {id: ticket.id, status: "completed"}), method: "PATCH", class:"white-text waves-effect waves-light btn teal lighten-2" %>
+                  <%= link_to 'Delete', ticket, method: :delete, data: { confirm: 'Are you sure?' }, class:"white-text waves-effect waves-light btn red lighten-2" %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>
-</div>
-    <% end %>
-
-
-<%= link_to 'New Ticket', new_ticket_path %>

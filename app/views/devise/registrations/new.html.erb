@@ -1,17 +1,5 @@
 <style>
-    body {
-      display: flex;
-      min-height: 100vh;
-      flex-direction: column;
-    }
 
-    main {
-      flex: 1 0 auto;
-    }
-
-    body {
-      background: #fff;
-    }
 
     .input-field{
       -webkit-box-shadow: 0 0 0px 1000px #F5F5F5 inset;
@@ -36,13 +24,13 @@
       -webkit-box-shadow: 0 0 0px 1000px #F5F5F5 inset;
     }
 
-  </style>
+</style>
 
 <center>
       <div class="section"></div>
       <h2>Sign up</h2>
       <div class="container">
-        <div class="z-depth-1 grey lighten-4 row" style="display: inline-block; padding: 32px 48px 0px 48px; border: 1px solid #EEE;">
+        <div class="z-depth-1 grey lighten-4 row" style="width:50%;display: inline-block; padding: 32px 48px 0px 48px; border: 1px solid #EEE;">
 
           <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
             <%= devise_error_messages! %>
@@ -55,6 +43,20 @@
               <div class='input-field col s12'>
                 <%= f.email_field :email, class: "validate", type:"email", style: "-webkit-box-shadow: 0 0 0px 1000px #F5F5F5 inset;"%>
                 <%= f.label "Enter your email", for:"email", style: "text-align:left;" %>
+              </div>
+            </div>
+
+            <div class='row'>
+              <div class='input-field col s12'>
+                <%= f.text_field :name, class: "validate", style: "-webkit-box-shadow: 0 0 0px 1000px #F5F5F5 inset;"%>
+                <%= f.label "Enter your name", for:"name", style: "text-align:left;" %>
+              </div>
+            </div>
+
+            <div class='row'>
+              <div class="input-field col s12">
+                <%= f.collection_select :department_id, Department.all, :id, :name %>
+                <label for="department_id">Department</label>
               </div>
             </div>
 
