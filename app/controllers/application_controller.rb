@@ -3,6 +3,23 @@ class ApplicationController < ActionController::Base
   before_action :authenticate_user!
   before_action :configure_permitted_parameters, if: :devise_controller?
 
+  def notify_user(user)
+    require 'mandrill'
+    m = Mandrill::API.new ENV['MANDRILL_API']
+    message = {
+        :subject => "New Ticket",
+        :from_name => "Simple Tcket",
+        :text => "Your Department has just received a new ticket.",
+        :to => [
+            {
+                :email => user.email
+            }
+        ],
+        :from_email => "no-reply@4beauty.net"
+    }
+    m.messages.send message
+  end
+
 protected
 
   def configure_permitted_parameters
