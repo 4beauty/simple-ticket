@@ -32,6 +32,11 @@ class TicketsController < ApplicationController
     @ticket = Ticket.new(ticket_params)
     respond_to do |format|
       if @ticket.save
+        
+       @ticket.department.users.each do |user|
+         notify_user(user)
+       end
+
         format.html { redirect_to tickets_path, notice: 'Ticket was successfully created.' }
         format.json { render :show, status: :created, location: @ticket }
       else
