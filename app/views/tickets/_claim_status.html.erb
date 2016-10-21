@@ -1,0 +1,9 @@
+<span class="card-title"><%= ticket.department ? ticket.department.name.upcase : ticket.user.department.name.upcase %>
+  <% if ticket.user %>
+      <div class="right chip green lighten-4"><%= ticket.user.name.titleize %></div>
+  <% else %>
+    <%= link_to ticket_path(id: ticket.id, ticket: {id: ticket.id, user_id: current_user.id}), method:"PATCH" ,class:"right btn-floating lighten-2 waves-effect waves-light red" do %>
+      <i class="material-icons">add</i>
+    <% end %>
+  <% end %>
+</span>

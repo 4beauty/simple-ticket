@@ -1,0 +1,9 @@
+<% if ticket.completed? %>
+  <span class="text-green left">Completed On <%= ticket.completed_on.strftime('%D')%></span>
+  <%= link_to 'Delete', ticket, method: :delete, data: { confirm: 'Are you sure?' }, class:"right white-text waves-effect waves-light btn red lighten-2" %>
+  <div style="clear:both;"></div>
+<%else%>
+  <%= link_to 'Delete', ticket, method: :delete, data: { confirm: 'Are you sure?' }, class:"right white-text waves-effect waves-light btn red lighten-2", style:"margin-left:10px;"%>
+  <%= link_to 'Complete', ticket_path(id: ticket,  ticket: {id: ticket.id, status: "completed"}), method: "PATCH", class:"right white-text waves-effect waves-light btn teal lighten-2" %>
+  <div style="clear:both;"></div>
+<%end%>
