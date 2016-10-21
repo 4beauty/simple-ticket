@@ -12,8 +12,7 @@ class Ticket < ApplicationRecord
 
   def check_for_ticket_completion
     if self.status_changed? && self.status == "completed"
-      self.completed_on = DateTime.now
-      p "$" * 50
+      update_column(:completed_on, DateTime.now)
     end
   end
 
