@@ -2,7 +2,7 @@
 
 <h1>Tickets</h1>
   <div class="row">
-    <div class="col m2">
+    <div class="col m3 s12">
       <p class="teal-text">Signed in as <%=current_user.name.titleize%></p>
       <div class="clear"></div>
       <nav class="teal">
@@ -22,35 +22,48 @@
         <%= link_to 'View Resolved Tickets', tickets_path(resolved: true ), class:"collection-item" %>
       </div>
     </div>
-    <div class="col m9 offset-m1">
+    <div class="col s12 m9">
       <div class="ticket-container">
         <div class="row">
           <% @tickets.each do |ticket| %>
-            <div class="col s12 m6 l4">
-              <div class="card ">
+            <div class="col s12 m6 l6">
+              <div class="card" >
                 <div class="card-content black-text">
-                  <span class="card-title"><%= ticket.department ? ticket.department.name.upcase : ticket.user.department.name.upcase %>
-                    <% if ticket.user %>
-                      <div class="right chip green lighten-4"><%= ticket.user.name.titleize %></div>
-                    <% else %>
-                      <%= link_to ticket_path(id: ticket.id, ticket: {id: ticket.id, user_id: current_user.id}), method:"PATCH" ,class:"right btn-floating lighten-2 waves-effect waves-light red" do %>
-                        <i class="material-icons">add</i>
-                      <% end %>
-                    <% end %>
-                  </span>
-                  <p><%= ticket.comment.humanize %><br/><br/></p>
-                <span class="right grey-text"> Submitted By <div class="chip red lighten-4"><%= ticket.submitted_by.titleize %></div></span>
-                  <br>
+                  <%= render partial: 'claim_status', locals: {ticket: ticket} %>
+                  <p class="text"><%= ticket.comment.humanize %><br/><br/></p>
                   <div class="clear"></div>
+                  <br>
+                  <a class="left blue lighten-3 white-text chip waves-effect waves-light btn modal-trigger" href="#<%=ticket.id%>">View More</a>
+                  <div class="right chip red lighten-4"><%= ticket.submitted_by.titleize %></div>
+                  <div class="clear"></div>
+                  <br>
                 </div>
                 <div class="card-action">
-                  <%= link_to 'Complete', ticket_path(id: ticket,  ticket: {id: ticket.id, status: "completed"}), method: "PATCH", class:"white-text waves-effect waves-light btn teal lighten-2" %>
-                  <%= link_to 'Delete', ticket, method: :delete, data: { confirm: 'Are you sure?' }, class:"white-text waves-effect waves-light btn red lighten-2" %>
+                  <%= render partial: 'ticket_status', locals: {ticket: ticket} %>
                 </div>
               </div>
             </div>
+            <%= render partial: "ticket_modal", locals: {ticket: ticket} %>
           <% end %>
         </div>
       </div>
     </div>
   </div>
+
+<script>
+  $(document).ready(function(){
+     // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+     $('.modal-trigger').leanModal();
+   });
+</script>
+<style>
+.text {
+   overflow: hidden;
+   text-overflow: ellipsis;
+   display: -webkit-box;
+   line-height: 16px;     /* fallback */
+   max-height: 32px;      /* fallback */
+   -webkit-line-clamp: 2; /* number of lines to show */
+   -webkit-box-orient: vertical;
+}
+</style>
