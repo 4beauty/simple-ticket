@@ -6,9 +6,9 @@ class TicketsController < ApplicationController
   # GET /tickets.json
   def index
     if params[:resolved].present?
-      @tickets = Ticket.all.where(status: "completed")
+      @tickets = current_user.department.tickets.where(status: "completed")
     else
-      @tickets = Ticket.all.where(status: "pending")
+      @tickets = current_user.department.tickets.where(status: "pending")
     end
   end
 
@@ -32,7 +32,7 @@ class TicketsController < ApplicationController
     @ticket = Ticket.new(ticket_params)
     respond_to do |format|
       if @ticket.save
-        
+
        @ticket.department.users.each do |user|
          notify_user(user)
        end

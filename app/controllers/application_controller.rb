@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   def notify_user(user)
     require 'mandrill'
     m = Mandrill::API.new ENV['MANDRILL_API']
+
     message = {
         :subject => "New Ticket",
         :from_name => "Simple Tcket",
